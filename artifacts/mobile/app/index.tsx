@@ -1,10 +1,10 @@
-import { Feather, Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import { router } from "expo-router";
 import React from "react";
 import {
-  Dimensions,
   Platform,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -14,12 +14,13 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useApp } from "@/context/AppContext";
 import { useColors } from "@/hooks/useColors";
 
-const { width, height } = Dimensions.get("window");
-
 export default function LandingScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
   const { setUserType } = useApp();
+
+  const topPad = Platform.OS === "web" ? 67 : insets.top;
+  const botPad = Platform.OS === "web" ? 34 : insets.bottom;
 
   function handleParent() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -33,155 +34,130 @@ export default function LandingScreen() {
     router.replace("/sitter/dashboard");
   }
 
-  const topPad = Platform.OS === "web" ? 67 : insets.top;
-  const botPad = Platform.OS === "web" ? 34 : insets.bottom;
-
   return (
-    <View
-      style={[
-        styles.container,
-        { backgroundColor: colors.darkBg, paddingTop: topPad, paddingBottom: botPad },
+    <ScrollView
+      style={[styles.container, { backgroundColor: colors.darkBg }]}
+      contentContainerStyle={[
+        styles.content,
+        { paddingTop: topPad + 20, paddingBottom: botPad + 30 },
       ]}
+      bounces={false}
     >
-      {/* Background accent circles */}
-      <View
-        style={[
-          styles.bgCircle,
-          { backgroundColor: colors.navy + "60", top: height * 0.05, left: -80 },
-        ]}
-      />
-      <View
-        style={[
-          styles.bgCircle2,
-          { backgroundColor: colors.teal + "20", bottom: height * 0.15, right: -60 },
-        ]}
-      />
-
-      {/* Top section */}
-      <View style={styles.topSection}>
-        <View style={styles.logoContainer}>
-          {/* House + Heart icon */}
-          <View style={[styles.iconCircle, { backgroundColor: colors.navy }]}>
-            <Ionicons name="home" size={32} color={colors.teal} />
-            <View style={[styles.heartOverlay, { backgroundColor: colors.darkBg }]}>
-              <Ionicons name="heart" size={14} color={colors.teal} />
-            </View>
-          </View>
-          <Text style={[styles.logoText, { color: colors.foreground }]}>
-            Go<Text style={{ color: colors.teal }}>Sitter</Text>
-          </Text>
+      {/* Logo */}
+      <View style={styles.logoRow}>
+        <View style={[styles.logoCircle, { backgroundColor: colors.navy }]}>
+          <Ionicons name="home" size={32} color={colors.teal} />
+          <Ionicons
+            name="heart"
+            size={14}
+            color={colors.teal}
+            style={styles.heartIcon}
+          />
         </View>
+      </View>
 
+      {/* Hero */}
+      <View style={styles.heroSection}>
+        <Text style={[styles.logo, { color: colors.foreground }]}>
+          Go<Text style={{ color: colors.teal }}>Sitter</Text>
+        </Text>
         <Text style={[styles.tagline, { color: colors.foreground }]}>
           A university-verified sitter{"\n"}at your door in{" "}
           <Text style={{ color: colors.teal }}>30 minutes.</Text>
         </Text>
 
         <Text style={[styles.sub, { color: colors.mutedForeground }]}>
-          Trusted by 4,000+ families in Victoria, BC
+          Trusted by families across Canada
         </Text>
       </View>
 
       {/* Trust indicators */}
       <View style={styles.trustRow}>
         {[
-          { icon: "shield-checkmark" as const, text: "Background Checked" },
-          { icon: "school" as const, text: "University Verified" },
-          { icon: "time" as const, text: "30-Min Arrival" },
+          { icon: "shield-checkmark", label: "Background\nChecked" },
+          { icon: "school", label: "University\nVerified" },
+          { icon: "time", label: "30-Min\nArrival" },
         ].map((item) => (
-          <View key={item.text} style={styles.trustItem}>
-            <Ionicons name={item.icon} size={20} color={colors.teal} />
-            <Text style={[styles.trustText, { color: colors.mutedForeground }]}>
-              {item.text}
+          <View key={item.label} style={styles.trustItem}>
+            <Ionicons name={item.icon as any} size={22} color={colors.teal} />
+            <Text style={[styles.trustLabel, { color: colors.mutedForeground }]}>
+              {item.label}
             </Text>
           </View>
         ))}
       </View>
 
-      {/* Buttons */}
-      <View style={styles.buttonsContainer}>
+      {/* City badge strip */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.cityScroll}
+        contentContainerStyle={styles.cityContent}
+      >
+        {["Victoria", "Vancouver", "Calgary", "Toronto", "Ottawa", "Montréal", "Winnipeg", "Halifax", "Edmonton"].map((city) => (
+          <View key={city} style={[styles.cityBadge, { backgroundColor: colors.card, borderColor: colors.border }]}>
+            <Ionicons name="location-outline" size={11} color={colors.teal} />
+            <Text style={[styles.cityBadgeText, { color: colors.mutedForeground }]}>{city}</Text>
+          </View>
+        ))}
+      </ScrollView>
+
+      {/* CTA Buttons */}
+      <View style={styles.btnGroup}>
         <TouchableOpacity
           onPress={handleParent}
           activeOpacity={0.85}
-          style={[styles.primaryBtn, { backgroundColor: colors.teal }]}
+          style={[styles.btn, styles.btnPrimary, { backgroundColor: colors.teal }]}
         >
           <Ionicons name="calendar" size={20} color="#FFFFFF" />
-          <Text style={styles.primaryBtnText}>Book a Sitter</Text>
-          <Feather name="arrow-right" size={18} color="#FFFFFF" />
+          <Text style={styles.btnPrimaryText}>Book a Sitter</Text>
+          <Ionicons name="arrow-forward" size={18} color="#FFFFFF" />
         </TouchableOpacity>
 
         <TouchableOpacity
           onPress={handleSitter}
           activeOpacity={0.85}
           style={[
-            styles.secondaryBtn,
-            { backgroundColor: colors.cardBg, borderColor: colors.border },
+            styles.btn,
+            styles.btnSecondary,
+            { backgroundColor: colors.card, borderColor: colors.border },
           ]}
         >
           <Ionicons name="person" size={20} color={colors.foreground} />
-          <Text style={[styles.secondaryBtnText, { color: colors.foreground }]}>
+          <Text style={[styles.btnSecondaryText, { color: colors.foreground }]}>
             I'm a Sitter
           </Text>
-          <Feather name="arrow-right" size={18} color={colors.mutedForeground} />
+          <Ionicons name="arrow-forward" size={18} color={colors.mutedForeground} />
         </TouchableOpacity>
       </View>
 
-      <Text style={[styles.footer, { color: colors.mutedForeground }]}>
+      <Text style={[styles.legal, { color: colors.mutedForeground }]}>
         By continuing, you agree to our Terms & Privacy Policy
       </Text>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 24,
-    justifyContent: "space-between",
-  },
-  bgCircle: {
-    position: "absolute",
-    width: 280,
-    height: 280,
-    borderRadius: 140,
-  },
-  bgCircle2: {
-    position: "absolute",
-    width: 240,
-    height: 240,
-    borderRadius: 120,
-  },
-  topSection: {
-    flex: 1,
-    justifyContent: "center",
+  container: { flex: 1 },
+  content: {
+    paddingHorizontal: 28,
     alignItems: "center",
-    gap: 16,
-    paddingTop: 40,
+    gap: 28,
   },
-  logoContainer: {
-    alignItems: "center",
-    gap: 16,
-    marginBottom: 8,
-  },
-  iconCircle: {
-    width: 88,
-    height: 88,
-    borderRadius: 44,
+  logoRow: { alignItems: "center" },
+  logoCircle: {
+    width: 90,
+    height: 90,
+    borderRadius: 45,
     alignItems: "center",
     justifyContent: "center",
+    position: "relative",
   },
-  heartOverlay: {
-    position: "absolute",
-    bottom: 12,
-    right: 12,
-    width: 22,
-    height: 22,
-    borderRadius: 11,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  logoText: {
-    fontSize: 42,
+  heartIcon: { position: "absolute", bottom: 14, right: 12 },
+  heroSection: { alignItems: "center", gap: 10 },
+  logo: {
+    fontSize: 48,
     fontWeight: "700" as const,
     fontFamily: "Inter_700Bold",
     letterSpacing: -1,
@@ -191,7 +167,7 @@ const styles = StyleSheet.create({
     fontWeight: "600" as const,
     fontFamily: "Inter_600SemiBold",
     textAlign: "center",
-    lineHeight: 30,
+    lineHeight: 32,
   },
   sub: {
     fontSize: 14,
@@ -200,59 +176,65 @@ const styles = StyleSheet.create({
   },
   trustRow: {
     flexDirection: "row",
-    justifyContent: "space-around",
-    paddingVertical: 24,
+    gap: 28,
+    justifyContent: "center",
   },
-  trustItem: {
-    alignItems: "center",
-    gap: 6,
-  },
-  trustText: {
+  trustItem: { alignItems: "center", gap: 6 },
+  trustLabel: {
     fontSize: 11,
     fontFamily: "Inter_500Medium",
     textAlign: "center",
-    maxWidth: 70,
+    lineHeight: 16,
   },
-  buttonsContainer: {
-    gap: 12,
-    paddingBottom: 12,
+  cityScroll: { alignSelf: "stretch" },
+  cityContent: {
+    gap: 8,
+    paddingHorizontal: 4,
+    flexDirection: "row",
+    alignItems: "center",
   },
-  primaryBtn: {
+  cityBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 20,
+    borderWidth: 1,
+  },
+  cityBadgeText: {
+    fontSize: 12,
+    fontFamily: "Inter_500Medium",
+  },
+  btnGroup: { gap: 12, alignSelf: "stretch" },
+  btn: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 16,
-    borderRadius: 14,
+    paddingVertical: 18,
+    borderRadius: 16,
     gap: 10,
   },
-  primaryBtnText: {
-    flex: 1,
-    textAlign: "center",
+  btnPrimary: {},
+  btnPrimaryText: {
     color: "#FFFFFF",
     fontSize: 17,
     fontWeight: "700" as const,
     fontFamily: "Inter_700Bold",
-  },
-  secondaryBtn: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 16,
-    borderRadius: 14,
-    borderWidth: 1,
-    gap: 10,
-  },
-  secondaryBtnText: {
     flex: 1,
     textAlign: "center",
+  },
+  btnSecondary: { borderWidth: 1 },
+  btnSecondaryText: {
     fontSize: 17,
     fontWeight: "600" as const,
     fontFamily: "Inter_600SemiBold",
-  },
-  footer: {
-    fontSize: 11,
+    flex: 1,
     textAlign: "center",
+  },
+  legal: {
+    fontSize: 11,
     fontFamily: "Inter_400Regular",
-    paddingBottom: 8,
+    textAlign: "center",
   },
 });

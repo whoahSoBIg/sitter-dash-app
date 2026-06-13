@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
+import { City, DEFAULT_CITY } from "@/data/cities";
 
 export type UserType = "parent" | "sitter" | null;
 
@@ -41,25 +42,15 @@ interface AppState {
   setChildren: (c: ChildProfile[]) => void;
   sitterActive: boolean;
   setSitterActive: (a: boolean) => void;
+  selectedCity: City;
+  setSelectedCity: (c: City) => void;
 }
 
 const AppContext = createContext<AppState | null>(null);
 
 const defaultChildren: ChildProfile[] = [
-  {
-    id: "c1",
-    name: "Emma",
-    age: 6,
-    allergies: "Peanuts",
-    medicalNotes: "Carries EpiPen",
-  },
-  {
-    id: "c2",
-    name: "Liam",
-    age: 3,
-    allergies: "None",
-    medicalNotes: "",
-  },
+  { id: "c1", name: "Emma", age: 6, allergies: "Peanuts", medicalNotes: "Carries EpiPen" },
+  { id: "c2", name: "Liam", age: 3, allergies: "None", medicalNotes: "" },
 ];
 
 export function AppProvider({ children: childrenNodes }: { children: ReactNode }) {
@@ -68,20 +59,17 @@ export function AppProvider({ children: childrenNodes }: { children: ReactNode }
   const [sessionStatus, setSessionStatus] = useState<SessionStatus>("idle");
   const [children, setChildren] = useState<ChildProfile[]>(defaultChildren);
   const [sitterActive, setSitterActive] = useState(false);
+  const [selectedCity, setSelectedCity] = useState<City>(DEFAULT_CITY);
 
   return (
     <AppContext.Provider
       value={{
-        userType,
-        setUserType,
-        bookingDraft,
-        setBookingDraft,
-        sessionStatus,
-        setSessionStatus,
-        children,
-        setChildren,
-        sitterActive,
-        setSitterActive,
+        userType, setUserType,
+        bookingDraft, setBookingDraft,
+        sessionStatus, setSessionStatus,
+        children, setChildren,
+        sitterActive, setSitterActive,
+        selectedCity, setSelectedCity,
       }}
     >
       {childrenNodes}
