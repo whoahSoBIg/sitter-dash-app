@@ -13,7 +13,7 @@ import type {
 } from "./database.types"
 
 const supabaseUrl = "https://jzwxwtkastpwbvmmefou.supabase.co"
-const supabaseAnonKey = sb_publishable_8Yo0TI-dAiu6EdpMGYUZ2Q_23kXEYhj
+const supabaseAnonKey = "sb_publishable_8Yo0TI-dAiu6EdpMGYUZ2Q_23kXEYhj"
 export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey)
 
 // ─── Auth ─────────────────────────────────────────────────────────────────────
