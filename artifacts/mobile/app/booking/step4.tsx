@@ -40,6 +40,9 @@ export default function BookingStep4() {
     : "";
 
   function handleConfirm() {
+  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+  router.push("/payment");
+}{
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     setSessionStatus("booking_sent");
     Alert.alert(
