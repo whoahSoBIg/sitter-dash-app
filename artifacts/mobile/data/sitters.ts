@@ -18,6 +18,7 @@ export interface Sitter {
   coordinate: { latitude: number; longitude: number };
   initials: string;
   avatarColor: string;
+  photoUrl: string;
   yearsExp: number;
 }
 
@@ -67,6 +68,7 @@ export const SITTERS: Sitter[] = [
     coordinate: { latitude: 48.431, longitude: -123.369 },
     initials: "MC",
     avatarColor: "#2563EB",
+    photoUrl: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=200&h=200&fit=crop&crop=face",
     yearsExp: 4,
   },
   {
@@ -89,6 +91,7 @@ export const SITTERS: Sitter[] = [
     coordinate: { latitude: 48.426, longitude: -123.358 },
     initials: "JP",
     avatarColor: "#7C3AED",
+    photoUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face",
     yearsExp: 3,
   },
   {
@@ -111,6 +114,7 @@ export const SITTERS: Sitter[] = [
     coordinate: { latitude: 48.437, longitude: -123.374 },
     initials: "SN",
     avatarColor: "#059669",
+    photoUrl: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop&crop=face",
     yearsExp: 5,
   },
   {
@@ -133,6 +137,7 @@ export const SITTERS: Sitter[] = [
     coordinate: { latitude: 48.422, longitude: -123.361 },
     initials: "AR",
     avatarColor: "#DC2626",
+    photoUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=face",
     yearsExp: 2,
   },
   {
@@ -155,9 +160,9 @@ export const SITTERS: Sitter[] = [
     coordinate: { latitude: 48.441, longitude: -123.352 },
     initials: "PS",
     avatarColor: "#D97706",
+    photoUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&crop=face",
     yearsExp: 3,
   },
-
   // ─── Vancouver, BC ──────────────────────────────────────────────────────────
   {
     id: "s6",
@@ -179,6 +184,7 @@ export const SITTERS: Sitter[] = [
     coordinate: { latitude: 49.2676, longitude: -123.1563 },
     initials: "CK",
     avatarColor: "#EC4899",
+    photoUrl: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200&h=200&fit=crop&crop=face",
     yearsExp: 5,
   },
   {
@@ -201,6 +207,7 @@ export const SITTERS: Sitter[] = [
     coordinate: { latitude: 49.2631, longitude: -123.1011 },
     initials: "LF",
     avatarColor: "#0891B2",
+    photoUrl: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&h=200&fit=crop&crop=face",
     yearsExp: 3,
   },
   {
@@ -223,9 +230,9 @@ export const SITTERS: Sitter[] = [
     coordinate: { latitude: 49.2750, longitude: -123.1210 },
     initials: "AD",
     avatarColor: "#7C3AED",
+    photoUrl: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=200&h=200&fit=crop&crop=face",
     yearsExp: 2,
   },
-
   // ─── Calgary, AB ────────────────────────────────────────────────────────────
   {
     id: "s9",
@@ -247,6 +254,7 @@ export const SITTERS: Sitter[] = [
     coordinate: { latitude: 51.038, longitude: -114.073 },
     initials: "EK",
     avatarColor: "#DC2626",
+    photoUrl: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=200&h=200&fit=crop&crop=face",
     yearsExp: 3,
   },
   {
@@ -269,9 +277,9 @@ export const SITTERS: Sitter[] = [
     coordinate: { latitude: 51.053, longitude: -114.088 },
     initials: "IT",
     avatarColor: "#059669",
+    photoUrl: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=200&h=200&fit=crop&crop=face",
     yearsExp: 4,
   },
-
   // ─── Toronto, ON ────────────────────────────────────────────────────────────
   {
     id: "s11",
@@ -293,6 +301,7 @@ export const SITTERS: Sitter[] = [
     coordinate: { latitude: 43.665, longitude: -79.400 },
     initials: "ZT",
     avatarColor: "#D97706",
+    photoUrl: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=200&h=200&fit=crop&crop=face",
     yearsExp: 7,
   },
   {
@@ -315,6 +324,7 @@ export const SITTERS: Sitter[] = [
     coordinate: { latitude: 43.659, longitude: -79.332 },
     initials: "NO",
     avatarColor: "#2563EB",
+    photoUrl: "https://images.unsplash.com/photo-1463453091185-61582044d556?w=200&h=200&fit=crop&crop=face",
     yearsExp: 3,
   },
   {
@@ -337,9 +347,9 @@ export const SITTERS: Sitter[] = [
     coordinate: { latitude: 43.670, longitude: -79.389 },
     initials: "MP",
     avatarColor: "#7C3AED",
+    photoUrl: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=200&h=200&fit=crop&crop=face",
     yearsExp: 4,
   },
-
   // ─── Ottawa, ON ─────────────────────────────────────────────────────────────
   {
     id: "s14",
@@ -361,6 +371,7 @@ export const SITTERS: Sitter[] = [
     coordinate: { latitude: 45.409, longitude: -75.690 },
     initials: "CB",
     avatarColor: "#EC4899",
+    photoUrl: "https://images.unsplash.com/photo-1499952127939-9bbf5af6c51c?w=200&h=200&fit=crop&crop=face",
     yearsExp: 5,
   },
   {
@@ -383,9 +394,9 @@ export const SITTERS: Sitter[] = [
     coordinate: { latitude: 45.397, longitude: -75.759 },
     initials: "RM",
     avatarColor: "#DC2626",
+    photoUrl: "https://images.unsplash.com/photo-1504257432389-52343af06ae3?w=200&h=200&fit=crop&crop=face",
     yearsExp: 2,
   },
-
   // ─── Montréal, QC ───────────────────────────────────────────────────────────
   {
     id: "s16",
@@ -407,6 +418,7 @@ export const SITTERS: Sitter[] = [
     coordinate: { latitude: 45.521, longitude: -73.580 },
     initials: "LG",
     avatarColor: "#059669",
+    photoUrl: "https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?w=200&h=200&fit=crop&crop=face",
     yearsExp: 5,
   },
   {
@@ -429,9 +441,9 @@ export const SITTERS: Sitter[] = [
     coordinate: { latitude: 45.527, longitude: -73.598 },
     initials: "SC",
     avatarColor: "#0891B2",
+    photoUrl: "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=200&h=200&fit=crop&crop=face",
     yearsExp: 3,
   },
-
   // ─── Winnipeg, MB ───────────────────────────────────────────────────────────
   {
     id: "s18",
@@ -453,9 +465,9 @@ export const SITTERS: Sitter[] = [
     coordinate: { latitude: 49.883, longitude: -97.149 },
     initials: "AR",
     avatarColor: "#D97706",
+    photoUrl: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=200&h=200&fit=crop&crop=face",
     yearsExp: 4,
   },
-
   // ─── Halifax, NS ────────────────────────────────────────────────────────────
   {
     id: "s19",
@@ -477,9 +489,9 @@ export const SITTERS: Sitter[] = [
     coordinate: { latitude: 44.637, longitude: -63.581 },
     initials: "FM",
     avatarColor: "#7C3AED",
+    photoUrl: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop&crop=face",
     yearsExp: 3,
   },
-
   // ─── Edmonton, AB ───────────────────────────────────────────────────────────
   {
     id: "s20",
@@ -501,6 +513,7 @@ export const SITTERS: Sitter[] = [
     coordinate: { latitude: 53.536, longitude: -113.511 },
     initials: "DH",
     avatarColor: "#DC2626",
+    photoUrl: "https://images.unsplash.com/photo-1521119989659-a83eee488004?w=200&h=200&fit=crop&crop=face",
     yearsExp: 2,
   },
 ];
