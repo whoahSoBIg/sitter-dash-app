@@ -7,6 +7,7 @@ export interface Sitter {
   reviewCount: number;
   ratePerHour: number;
   distance: number;
+  neighbourhood: string;
   bio: string;
   certifications: string[];
   backgroundCheck: "pending" | "verified" | "top_pro";
@@ -52,6 +53,7 @@ export const SITTERS: Sitter[] = [
     reviewCount: 87,
     ratePerHour: 22,
     distance: 0.8,
+    neighbourhood: "Downtown Victoria",
     bio: "Child development major with 4+ years of babysitting experience. I specialize in creative play, homework help, and building confidence in kids. Fully vaccinated, first-aid certified, and background checked.",
     certifications: ["First Aid & CPR", "Child Development", "Swimming Instructor"],
     backgroundCheck: "top_pro",
@@ -71,6 +73,7 @@ export const SITTERS: Sitter[] = [
     reviewCount: 62,
     ratePerHour: 24,
     distance: 1.2,
+    neighbourhood: "Fairfield",
     bio: "Computer science student who loves teaching kids through play and coding. Patient, creative, and safety-focused. I hold an active first-aid certification and have a clean background check.",
     certifications: ["First Aid & CPR", "Coding for Kids"],
     backgroundCheck: "verified",
@@ -90,6 +93,7 @@ export const SITTERS: Sitter[] = [
     reviewCount: 114,
     ratePerHour: 20,
     distance: 1.7,
+    neighbourhood: "James Bay",
     bio: "Education student and former preschool teacher's aide. I bring structured activities, lots of patience, and genuine warmth to every session. Kids absolutely love our arts & crafts sessions!",
     certifications: ["First Aid & CPR", "Early Childhood Ed.", "Arts & Crafts"],
     backgroundCheck: "top_pro",
@@ -109,6 +113,7 @@ export const SITTERS: Sitter[] = [
     reviewCount: 45,
     ratePerHour: 21,
     distance: 2.1,
+    neighbourhood: "Oak Bay",
     bio: "Kinesiology student and youth soccer coach. I love keeping kids active through sports and outdoor play. Bilingual in English and Spanish. Background checked and certified.",
     certifications: ["First Aid & CPR", "Sports Coaching", "Bilingual EN/ES"],
     backgroundCheck: "verified",
@@ -128,6 +133,7 @@ export const SITTERS: Sitter[] = [
     reviewCount: 73,
     ratePerHour: 23,
     distance: 2.8,
+    neighbourhood: "Rockland",
     bio: "Nursing student with pediatric care experience. I handle medical situations calmly and always put child safety first. Experienced with special needs children and infants.",
     certifications: ["First Aid & CPR", "Pediatric Care", "Infant Specialist"],
     backgroundCheck: "top_pro",

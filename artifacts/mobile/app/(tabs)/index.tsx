@@ -26,26 +26,29 @@ const VICTORIA = {
   longitudeDelta: 0.04,
 };
 
-const FILTERS = ["All Sitters", "Top Rated", "< 2km", "Under $22"];
+const FILTERS = [
+  "All",
+  "Downtown",
+  "James Bay",
+  "Fairfield",
+  "Oak Bay",
+  "Rockland",
+  "Saanich",
+];
 
 export default function HomeScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
-  const [activeFilter, setActiveFilter] = useState("All Sitters");
+  const [activeFilter, setActiveFilter] = useState("All");
 
   const topPad = Platform.OS === "web" ? 67 : insets.top;
 
   function getFilteredSitters(): Sitter[] {
-    switch (activeFilter) {
-      case "Top Rated":
-        return SITTERS.filter((s) => s.rating >= 4.8);
-      case "< 2km":
-        return SITTERS.filter((s) => s.distance < 2);
-      case "Under $22":
-        return SITTERS.filter((s) => s.ratePerHour <= 21);
-      default:
-        return SITTERS;
-    }
+    if (activeFilter === "All") return SITTERS;
+    const needle = activeFilter.toLowerCase();
+    return SITTERS.filter((s) =>
+      s.neighbourhood.toLowerCase().includes(needle)
+    );
   }
 
   const filtered = getFilteredSitters();
@@ -94,6 +97,7 @@ export default function HomeScreen() {
               Haptics.selectionAsync();
               setActiveFilter(f);
             }}
+
           />
         ))}
       </ScrollView>

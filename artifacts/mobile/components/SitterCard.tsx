@@ -184,7 +184,9 @@ export function SitterCard({
           <Text style={[styles.cardRating, { color: colors.foreground }]}> {sitter.rating}</Text>
           <Text style={[styles.cardDot, { color: colors.mutedForeground }]}> · </Text>
           <Ionicons name="location-outline" size={12} color={colors.mutedForeground} />
-          <Text style={[styles.cardMeta2, { color: colors.mutedForeground }]}>{sitter.distance}km</Text>
+          <Text style={[styles.cardMeta2, { color: colors.mutedForeground }]}>
+            {sitter.neighbourhood} · {sitter.distance}km
+          </Text>
         </View>
       </View>
       <View style={styles.cardRight}>
