@@ -3,7 +3,6 @@ import * as Haptics from "expo-haptics";
 import { router } from "expo-router";
 import React from "react";
 import {
-  Alert,
   Platform,
   ScrollView,
   StyleSheet,
