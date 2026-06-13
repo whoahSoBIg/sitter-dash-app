@@ -31,8 +31,9 @@ function RootLayoutNav() {
     }
   }, [userType]);
 
-  return (
-    <S<Stack.Screen name="auth" options={{ headerShown: false }} /> }}>
+ return (
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="auth" options={{ headerShown: false }} />
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="sitter/[id]" options={{ headerShown: false }} />
@@ -48,6 +49,7 @@ function RootLayoutNav() {
       <Stack.Screen name="session/receipt" options={{ headerShown: false }} />
       <Stack.Screen name="emergency" options={{ headerShown: false }} />
       <Stack.Screen name="ratings" options={{ headerShown: false }} />
+      <Stack.Screen name="payment" options={{ headerShown: false }} />
     </Stack>
   );
 }
