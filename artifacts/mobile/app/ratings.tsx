@@ -1,145 +1,135 @@
-import { Feather, Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import { router } from "expo-router";
 import React, { useState } from "react";
-import {
-  Alert,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useApp } from "@/context/AppContext";
 import { useColors } from "@/hooks/useColors";
+import { SITTERS } from "@/data/sitters";
+import { useApp } from "@/context/AppContext";
 
-function StarPicker({ rating, onRating }: { rating: number; onRating: (r: number) => void }) {
-  const colors = useColors();
-  return (
-    <View style={styles.starPicker}>
-      {[1, 2, 3, 4, 5].map((i) => (
-        <TouchableOpacity
-          key={i}
-          onPress={() => {
-            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-            onRating(i);
-          }}
-          activeOpacity={0.8}
-          hitSlop={{ top: 10, bottom: 10, left: 6, right: 6 }}
-        >
-          <Ionicons
-            name={i <= rating ? "star" : "star-outline"}
-            size={36}
-            color={i <= rating ? colors.gold : colors.border}
-          />
-        </TouchableOpacity>
-      ))}
-    </View>
-  );
-}
+const TIP_OPTIONS = [0, 5, 10, 15, 20];
 
 export default function RatingsScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
-  const { bookingDraft, setSessionStatus } = useApp();
-
-  const [sitterRating, setSitterRating] = useState(0);
+  const { selectedCity } = useApp();
+  const sitter = SITTERS.find((s) => s.cityId === selectedCity.id) ?? SITTERS[0];
+  const [stars, setStars] = useState(0);
+  const [hoveredStar, setHoveredStar] = useState(0);
+  const [tip, setTip] = useState(0);
   const [review, setReview] = useState("");
+  const [submitted, setSubmitted] = useState(false);
 
   const topPad = Platform.OS === "web" ? 67 : insets.top;
-  const botPad = Platform.OS === "web" ? 34 : insets.bottom;
 
-  const sitterName = bookingDraft?.sitterName ?? "Your Sitter";
-
-  function handleSubmit() {
-    if (sitterRating === 0) {
-      Alert.alert("Please rate your sitter first");
-      return;
-    }
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    setSessionStatus("idle");
-    router.replace("/session/receipt");
+  if (submitted) {
+    return (
+      <View style={[styles.container, styles.center, { backgroundColor: colors.darkBg }]}>
+        <Ionicons name="checkmark-circle" size={72} color={colors.teal} />
+        <Text style={[styles.thankTitle, { color: colors.foreground }]}>Thanks for your review!</Text>
+        <Text style={[styles.thankSub, { color: colors.mutedForeground }]}>
+          Your feedback helps other parents find great sitters.
+        </Text>
+        <TouchableOpacity
+          style={[styles.doneBtn, { backgroundColor: colors.teal }]}
+          onPress={() => router.replace("/(tabs)/bookings")}
+        >
+          <Text style={styles.doneBtnText}>Back to Bookings</Text>
+        </TouchableOpacity>
+      </View>
+    );
   }
 
   return (
     <View style={[styles.container, { backgroundColor: colors.darkBg }]}>
-      <View style={[styles.header, { paddingTop: topPad + 8 }]}>
-        <TouchableOpacity
-          onPress={() => router.back()}
-          style={[styles.backBtn, { backgroundColor: colors.card, borderColor: colors.border }]}
-          activeOpacity={0.8}
-        >
-          <Feather name="arrow-left" size={20} color={colors.foreground} />
-        </TouchableOpacity>
-        <Text style={[styles.headerTitle, { color: colors.foreground }]}>Rate Session</Text>
-        <View style={{ width: 42 }} />
+      <View style={[styles.header, { paddingTop: topPad + 12 }]}>
+        <Text style={[styles.title, { color: colors.foreground }]}>Rate Your Session</Text>
       </View>
 
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={[styles.content, { paddingBottom: botPad + 30 }]}
-      >
-        {/* Header message */}
-        <View style={styles.topSection}>
-          <Ionicons name="star-half" size={40} color={colors.gold} />
-          <Text style={[styles.title, { color: colors.foreground }]}>How was your session?</Text>
-          <Text style={[styles.sub, { color: colors.mutedForeground }]}>
-            Share your experience with {sitterName}
-          </Text>
+      <ScrollView contentContainerStyle={[styles.body, { paddingBottom: insets.bottom + 40 }]}>
+        <View style={[styles.sitterCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
+          <View style={[styles.avatar, { backgroundColor: sitter.avatarColor }]}>
+            <Text style={styles.avatarText}>{sitter.initials}</Text>
+          </View>
+          <View>
+            <Text style={[styles.sitterName, { color: colors.foreground }]}>{sitter.name}</Text>
+            <Text style={[styles.sitterSub, { color: colors.mutedForeground }]}>Session completed</Text>
+          </View>
         </View>
 
-        {/* Rate the sitter */}
-        <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
-          <View style={styles.cardHeader}>
-            <View style={[styles.sitterAvatar, { backgroundColor: "#2563EB" }]}>
-              <Text style={styles.sitterInitials}>MC</Text>
-            </View>
-            <View>
-              <Text style={[styles.cardTitle, { color: colors.foreground }]}>{sitterName}</Text>
-              <Text style={[styles.cardSub, { color: colors.mutedForeground }]}>Rate your sitter</Text>
-            </View>
+        <View style={[styles.section, { backgroundColor: colors.card, borderColor: colors.border }]}>
+          <Text style={[styles.sectionTitle, { color: colors.foreground }]}>How was your experience?</Text>
+          <View style={styles.starsRow}>
+            {[1, 2, 3, 4, 5].map((s) => (
+              <TouchableOpacity
+                key={s}
+                onPress={() => { Haptics.selectionAsync(); setStars(s); }}
+                onPressIn={() => setHoveredStar(s)}
+                onPressOut={() => setHoveredStar(0)}
+                activeOpacity={0.7}
+              >
+                <Ionicons
+                  name="star"
+                  size={40}
+                  color={(hoveredStar || stars) >= s ? "#F59E0B" : colors.border}
+                />
+              </TouchableOpacity>
+            ))}
           </View>
-          <StarPicker rating={sitterRating} onRating={setSitterRating} />
-          {sitterRating > 0 && (
-            <Text style={[styles.ratingLabel, { color: colors.teal }]}>
-              {["", "Poor", "Fair", "Good", "Great", "Excellent!"][sitterRating]}
+          {stars > 0 && (
+            <Text style={[styles.starLabel, { color: colors.mutedForeground }]}>
+              {["", "Poor", "Fair", "Good", "Great", "Amazing!"][stars]}
             </Text>
           )}
         </View>
 
-        {/* Written review */}
-        <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: colors.foreground }]}>Leave a Review</Text>
+        <View style={[styles.section, { backgroundColor: colors.card, borderColor: colors.border }]}>
+          <Text style={[styles.sectionTitle, { color: colors.foreground }]}>Leave a tip</Text>
+          <View style={styles.tipRow}>
+            {TIP_OPTIONS.map((t) => (
+              <TouchableOpacity
+                key={t}
+                onPress={() => { Haptics.selectionAsync(); setTip(t); }}
+                style={[
+                  styles.tipChip,
+                  {
+                    backgroundColor: tip === t ? colors.teal : colors.darkBg,
+                    borderColor: tip === t ? colors.teal : colors.border,
+                  },
+                ]}
+              >
+                <Text style={[styles.tipText, { color: tip === t ? "#fff" : colors.foreground }]}>
+                  {t === 0 ? "No tip" : `$${t}`}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+
+        <View style={[styles.section, { backgroundColor: colors.card, borderColor: colors.border }]}>
+          <Text style={[styles.sectionTitle, { color: colors.foreground }]}>Write a review (optional)</Text>
           <TextInput
-            style={[styles.reviewInput, { backgroundColor: colors.card, borderColor: colors.border, color: colors.foreground }]}
-            placeholder={`Tell others what you loved about ${sitterName.split(" ")[0]}...`}
+            style={[styles.reviewInput, { backgroundColor: colors.darkBg, borderColor: colors.border, color: colors.foreground }]}
+            placeholder="Share your experience..."
             placeholderTextColor={colors.mutedForeground}
-            multiline
-            numberOfLines={4}
             value={review}
             onChangeText={setReview}
-            textAlignVertical="top"
+            multiline
+            numberOfLines={4}
           />
         </View>
 
-        {/* Submit */}
         <TouchableOpacity
-          onPress={handleSubmit}
-          activeOpacity={sitterRating > 0 ? 0.85 : 1}
-          style={[styles.submitBtn, { backgroundColor: sitterRating > 0 ? colors.teal : colors.border }]}
+          style={[styles.submitBtn, { backgroundColor: stars > 0 ? colors.teal : colors.muted }]}
+          activeOpacity={0.85}
+          disabled={stars === 0}
+          onPress={() => {
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+            setSubmitted(true);
+          }}
         >
-          <Ionicons name="checkmark-circle" size={20} color="#FFFFFF" />
-          <Text style={styles.submitBtnText}>Submit Review</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() => router.replace("/(tabs)")}
-          activeOpacity={0.8}
-        >
-          <Text style={[styles.skipText, { color: colors.mutedForeground }]}>Skip for now</Text>
+          <Text style={styles.submitBtnText}>Submit Review{tip > 0 ? ` + $${tip} Tip` : ""}</Text>
         </TouchableOpacity>
       </ScrollView>
     </View>
@@ -148,51 +138,37 @@ export default function RatingsScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
-    paddingBottom: 8,
+  center: { alignItems: "center", justifyContent: "center", gap: 16, paddingHorizontal: 40 },
+  header: { paddingHorizontal: 20, paddingBottom: 16 },
+  title: { fontSize: 26, fontWeight: "700", fontFamily: "Inter_700Bold" },
+  body: { paddingHorizontal: 20, gap: 14 },
+  sitterCard: {
+    flexDirection: "row", alignItems: "center", gap: 14,
+    padding: 16, borderRadius: 14, borderWidth: 1,
   },
-  backBtn: { width: 42, height: 42, borderRadius: 21, borderWidth: 1, alignItems: "center", justifyContent: "center" },
-  headerTitle: { fontSize: 17, fontWeight: "700" as const, fontFamily: "Inter_700Bold" },
-  content: { paddingHorizontal: 20, gap: 20, paddingTop: 12 },
-  topSection: { alignItems: "center", gap: 10, paddingVertical: 16 },
-  title: { fontSize: 24, fontWeight: "700" as const, fontFamily: "Inter_700Bold", textAlign: "center" },
-  sub: { fontSize: 15, fontFamily: "Inter_400Regular", textAlign: "center" },
-  card: {
-    borderRadius: 16,
-    borderWidth: 1,
-    padding: 20,
-    gap: 16,
-    alignItems: "center",
+  avatar: { width: 52, height: 52, borderRadius: 26, alignItems: "center", justifyContent: "center" },
+  avatarText: { color: "#fff", fontSize: 17, fontWeight: "700", fontFamily: "Inter_700Bold" },
+  sitterName: { fontSize: 17, fontWeight: "700", fontFamily: "Inter_700Bold" },
+  sitterSub: { fontSize: 13, fontFamily: "Inter_400Regular", marginTop: 2 },
+  section: { borderRadius: 14, borderWidth: 1, padding: 16, gap: 14 },
+  sectionTitle: { fontSize: 16, fontWeight: "700", fontFamily: "Inter_700Bold" },
+  starsRow: { flexDirection: "row", gap: 8, justifyContent: "center", paddingVertical: 8 },
+  starLabel: { textAlign: "center", fontSize: 14, fontFamily: "Inter_500Medium" },
+  tipRow: { flexDirection: "row", gap: 8 },
+  tipChip: {
+    flex: 1, alignItems: "center", paddingVertical: 12,
+    borderRadius: 12, borderWidth: 1,
   },
-  cardHeader: { flexDirection: "row", alignItems: "center", gap: 12 },
-  sitterAvatar: { width: 48, height: 48, borderRadius: 24, alignItems: "center", justifyContent: "center" },
-  sitterInitials: { color: "#FFFFFF", fontSize: 16, fontWeight: "700" as const, fontFamily: "Inter_700Bold" },
-  cardTitle: { fontSize: 17, fontWeight: "700" as const, fontFamily: "Inter_700Bold" },
-  cardSub: { fontSize: 13, fontFamily: "Inter_400Regular" },
-  starPicker: { flexDirection: "row", gap: 8 },
-  ratingLabel: { fontSize: 18, fontWeight: "700" as const, fontFamily: "Inter_700Bold" },
-  section: { gap: 10 },
-  sectionTitle: { fontSize: 18, fontWeight: "700" as const, fontFamily: "Inter_700Bold" },
+  tipText: { fontSize: 13, fontWeight: "600", fontFamily: "Inter_600SemiBold" },
   reviewInput: {
-    borderRadius: 14,
-    borderWidth: 1,
-    padding: 14,
-    fontSize: 15,
-    fontFamily: "Inter_400Regular",
-    minHeight: 130,
+    borderRadius: 12, borderWidth: 1, padding: 14,
+    fontSize: 14, fontFamily: "Inter_400Regular",
+    height: 100, textAlignVertical: "top",
   },
-  submitBtn: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 16,
-    borderRadius: 14,
-    gap: 8,
-  },
-  submitBtnText: { color: "#FFFFFF", fontSize: 16, fontWeight: "700" as const, fontFamily: "Inter_700Bold" },
-  skipText: { fontSize: 14, fontFamily: "Inter_400Regular", textAlign: "center" },
+  submitBtn: { paddingVertical: 16, borderRadius: 14, alignItems: "center" },
+  submitBtnText: { color: "#fff", fontSize: 16, fontWeight: "700", fontFamily: "Inter_700Bold" },
+  thankTitle: { fontSize: 22, fontWeight: "700", fontFamily: "Inter_700Bold", textAlign: "center" },
+  thankSub: { fontSize: 15, fontFamily: "Inter_400Regular", textAlign: "center", lineHeight: 22 },
+  doneBtn: { marginTop: 8, paddingHorizontal: 32, paddingVertical: 14, borderRadius: 14 },
+  doneBtnText: { color: "#fff", fontSize: 16, fontWeight: "700", fontFamily: "Inter_700Bold" },
 });
