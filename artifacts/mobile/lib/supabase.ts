@@ -12,8 +12,8 @@ import type {
   SitterWithProfile,
 } from "./database.types"
 
-const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY!
+const supabaseUrl = "https://jzwxwtkastpwbvmmefou.supabase.co"
+const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp6d3h3dGthc3RwYnZtbWVmb3UiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc0OTg0MzAwMiwiZXhwIjoyMDY1NDE5MDAyfQ.pw8SwYUiVdJB_RaA6HbBu5ehaSagVHgkokOx3YeMk88"
 
 export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey)
 
