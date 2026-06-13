@@ -1,4 +1,5 @@
 import { Feather, Ionicons } from "@expo/vector-icons";
+import { Image } from "expo-image";
 import React from "react";
 import {
   Platform,
@@ -22,20 +23,32 @@ export function SitterAvatar({
   return (
     <View
       style={[
-        styles.avatar,
+        styles.avatarWrapper,
         {
           width: size,
           height: size,
           borderRadius: size / 2,
-          backgroundColor: sitter.avatarColor,
           borderWidth: 2,
           borderColor: colors.teal,
+          backgroundColor: sitter.avatarColor,
         },
       ]}
     >
-      <Text style={[styles.avatarText, { fontSize: size * 0.36 }]}>
-        {sitter.initials}
-      </Text>
+      {sitter.photoUrl ? (
+        <Image
+          source={{ uri: sitter.photoUrl }}
+          style={{
+            width: size - 4,
+            height: size - 4,
+            borderRadius: (size - 4) / 2,
+          }}
+          contentFit="cover"
+        />
+      ) : (
+        <Text style={[styles.avatarText, { fontSize: size * 0.36 }]}>
+          {sitter.initials}
+        </Text>
+      )}
     </View>
   );
 }
@@ -210,9 +223,10 @@ export function SitterCard({
 }
 
 const styles = StyleSheet.create({
-  avatar: {
+  avatarWrapper: {
     alignItems: "center",
     justifyContent: "center",
+    overflow: "hidden",
   },
   avatarText: {
     color: "#FFFFFF",
