@@ -107,14 +107,14 @@ export default function SitterDashboard() {
           ))}
         </View>
 
-        {/* SitterDash Plus */}
+        {/* GoSitter Plus */}
         <View style={[styles.plusCard, { borderColor: colors.gold + "44" }]}>
-          <View style={styles.plusLeft}>
+          <View style={styles.plusTop}>
             <Ionicons name="star" size={20} color={colors.gold} />
-            <View>
-              <Text style={[styles.plusTitle, { color: colors.foreground }]}>SitterDash Plus</Text>
+            <View style={styles.plusTextBlock}>
+              <Text style={[styles.plusTitle, { color: colors.foreground }]}>GoSitter Plus</Text>
               <Text style={[styles.plusSub, { color: colors.mutedForeground }]}>
-                $0 service fee for you + faster matching
+                $0 service fee for you + priority placement in search results.
               </Text>
             </View>
           </View>
@@ -252,15 +252,14 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     borderWidth: 1,
     padding: 14,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: "column",
     backgroundColor: "#1A1A2E",
   },
-  plusLeft: { flexDirection: "row", alignItems: "center", gap: 10, flex: 1 },
+  plusTop: { flexDirection: "row", alignItems: "flex-start", gap: 10, marginBottom: 10 },
+  plusTextBlock: { flex: 1 },
   plusTitle: { fontSize: 15, fontWeight: "700" as const, fontFamily: "Inter_700Bold" },
-  plusSub: { fontSize: 12, fontFamily: "Inter_400Regular", marginTop: 2 },
-  plusBtn: { paddingHorizontal: 12, paddingVertical: 8, borderRadius: 10 },
+  plusSub: { fontSize: 12, fontFamily: "Inter_400Regular", marginTop: 2, flexWrap: "wrap" },
+  plusBtn: { paddingHorizontal: 12, paddingVertical: 8, borderRadius: 10, alignSelf: "flex-start" },
   plusBtnText: { color: "#FFFFFF", fontSize: 13, fontWeight: "700" as const, fontFamily: "Inter_700Bold" },
   section: { gap: 12 },
   sectionRow: { flexDirection: "row", alignItems: "center", gap: 8 },

@@ -128,18 +128,18 @@ export default function ProfileScreen() {
         </View>
       </View>
 
-      {/* SitterDash Plus */}
+      {/* GoSitter Plus */}
       <TouchableOpacity
         activeOpacity={0.85}
         style={[styles.plusCard, { borderColor: colors.gold + "44" }]}
       >
         <View style={styles.plusGradient}>
-          <View style={styles.plusLeft}>
+          <View style={styles.plusTop}>
             <Ionicons name="star" size={22} color={colors.gold} />
-            <View>
-              <Text style={[styles.plusTitle, { color: colors.foreground }]}>SitterDash Plus</Text>
+            <View style={styles.plusTextBlock}>
+              <Text style={[styles.plusTitle, { color: colors.foreground }]}>GoSitter Plus</Text>
               <Text style={[styles.plusSub, { color: colors.mutedForeground }]}>
-                $0 service fee on every booking
+                $0 service fee for you + priority placement in search results.
               </Text>
             </View>
           </View>
@@ -310,16 +310,15 @@ const styles = StyleSheet.create({
   plusGradient: {
     backgroundColor: "#1A1A2E",
     padding: 16,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: "column",
   },
-  plusLeft: {
+  plusTop: {
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "flex-start",
     gap: 12,
-    flex: 1,
+    marginBottom: 10,
   },
+  plusTextBlock: { flex: 1 },
   plusTitle: {
     fontSize: 16,
     fontWeight: "700" as const,
@@ -334,6 +333,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 10,
+    alignSelf: "flex-start",
   },
   plusBtnText: {
     color: "#FFFFFF",

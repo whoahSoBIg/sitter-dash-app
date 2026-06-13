@@ -107,13 +107,13 @@ export function VouchedBadge() {
   );
 }
 
-// ─── SitterDash Plus Badge ───────────────────────────────────────────────────────
+// ─── GoSitter Plus Badge ─────────────────────────────────────────────────────────
 export function PlusBadge() {
   const colors = useColors();
   return (
     <View style={[styles.badge, { backgroundColor: colors.gold + "22", borderColor: colors.gold + "44" }]}>
       <Ionicons name="star" size={11} color={colors.gold} />
-      <Text style={[styles.badgeText, { color: colors.gold }]}>Dash Plus</Text>
+      <Text style={[styles.badgeText, { color: colors.gold }]}>GoSitter Plus</Text>
     </View>
   );
 }
