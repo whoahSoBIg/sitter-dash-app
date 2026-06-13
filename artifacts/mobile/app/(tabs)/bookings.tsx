@@ -16,12 +16,30 @@ import { useColors } from "@/hooks/useColors";
 
 const STATUS_CONFIG = {
   upcoming: { label: "Upcoming", color: "#3B82F6", icon: "calendar" as const },
-  active: { label: "Active", color: "#1D9E75", icon: "radio-button-on" as const },
-  completed: { label: "Completed", color: "#6B7FA3", icon: "checkmark-circle" as const },
-  cancelled: { label: "Cancelled", color: "#EF4444", icon: "close-circle" as const },
+  active: {
+    label: "Active",
+    color: "#1D9E75",
+    icon: "radio-button-on" as const,
+  },
+  completed: {
+    label: "Completed",
+    color: "#6B7FA3",
+    icon: "checkmark-circle" as const,
+  },
+  cancelled: {
+    label: "Cancelled",
+    color: "#EF4444",
+    icon: "close-circle" as const,
+  },
 };
 
-function BookingCard({ booking, onPress }: { booking: BookingRecord; onPress: () => void }) {
+function BookingCard({
+  booking,
+  onPress,
+}: {
+  booking: BookingRecord;
+  onPress: () => void;
+}) {
   const colors = useColors();
   const cfg = STATUS_CONFIG[booking.status];
 
@@ -29,10 +47,18 @@ function BookingCard({ booking, onPress }: { booking: BookingRecord; onPress: ()
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={0.85}
-      style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}
+      style={[
+        styles.card,
+        { backgroundColor: colors.card, borderColor: colors.border },
+      ]}
     >
       <View style={styles.cardTop}>
-        <View style={[styles.avatarSmall, { backgroundColor: booking.sitterAvatarColor }]}>
+        <View
+          style={[
+            styles.avatarSmall,
+            { backgroundColor: booking.sitterAvatarColor },
+          ]}
+        >
           <Text style={styles.avatarText}>{booking.sitterInitials}</Text>
         </View>
         <View style={styles.cardInfo}>
@@ -42,13 +68,25 @@ function BookingCard({ booking, onPress }: { booking: BookingRecord; onPress: ()
           <Text style={[styles.cardDate, { color: colors.mutedForeground }]}>
             {booking.date} · {booking.startTime}
           </Text>
-          <Text style={[styles.cardChildren, { color: colors.mutedForeground }]}>
+          <Text
+            style={[styles.cardChildren, { color: colors.mutedForeground }]}
+          >
             {booking.children.join(", ")}
           </Text>
         </View>
-        <View style={[styles.statusBadge, { backgroundColor: cfg.color + "22", borderColor: cfg.color + "44" }]}>
+        <View
+          style={[
+            styles.statusBadge,
+            {
+              backgroundColor: cfg.color + "22",
+              borderColor: cfg.color + "44",
+            },
+          ]}
+        >
           <Ionicons name={cfg.icon} size={12} color={cfg.color} />
-          <Text style={[styles.statusText, { color: cfg.color }]}>{cfg.label}</Text>
+          <Text style={[styles.statusText, { color: cfg.color }]}>
+            {cfg.label}
+          </Text>
         </View>
       </View>
       <View style={[styles.cardBottom, { borderTopColor: colors.border }]}>
@@ -72,14 +110,25 @@ export default function BookingsScreen() {
 
   const displayed =
     tab === "upcoming"
-      ? MOCK_BOOKINGS.filter((b) => b.status === "upcoming" || b.status === "active")
-      : MOCK_BOOKINGS.filter((b) => b.status === "completed" || b.status === "cancelled");
+      ? MOCK_BOOKINGS.filter(
+          (b) => b.status === "upcoming" || b.status === "active",
+        )
+      : MOCK_BOOKINGS.filter(
+          (b) => b.status === "completed" || b.status === "cancelled",
+        );
 
   return (
     <View style={[styles.container, { backgroundColor: colors.darkBg }]}>
       <View style={[styles.header, { paddingTop: topPad + 12 }]}>
-        <Text style={[styles.title, { color: colors.foreground }]}>My Bookings</Text>
-        <View style={[styles.tabBar, { backgroundColor: colors.card, borderColor: colors.border }]}>
+        <Text style={[styles.title, { color: colors.foreground }]}>
+          My Bookings
+        </Text>
+        <View
+          style={[
+            styles.tabBar,
+            { backgroundColor: colors.card, borderColor: colors.border },
+          ]}
+        >
           {(["upcoming", "past"] as const).map((t) => (
             <TouchableOpacity
               key={t}
@@ -128,8 +177,14 @@ export default function BookingsScreen() {
         ]}
         ListEmptyComponent={
           <View style={styles.empty}>
-            <Ionicons name="calendar-outline" size={48} color={colors.mutedForeground} />
-            <Text style={[styles.emptyTitle, { color: colors.foreground }]}>No bookings yet</Text>
+            <Ionicons
+              name="calendar-outline"
+              size={48}
+              color={colors.mutedForeground}
+            />
+            <Text style={[styles.emptyTitle, { color: colors.foreground }]}>
+              No bookings yet
+            </Text>
             <Text style={[styles.emptyText, { color: colors.mutedForeground }]}>
               Book a sitter to get started
             </Text>
