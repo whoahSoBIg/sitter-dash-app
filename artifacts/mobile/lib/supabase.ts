@@ -13,8 +13,7 @@ import type {
 } from "./database.types"
 
 const supabaseUrl = "https://jzwxwtkastpwbvmmefou.supabase.co"
-const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp6d3h3dGthc3RwYnZtbWVmb3UiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc0OTg0MzAwMiwiZXhwIjoyMDY1NDE5MDAyfQ.pw8SwYUiVdJB_RaA6HbBu5ehaSagVHgkokOx3YeMk88"
-
+const supabaseAnonKey = sb_publishable_8Yo0TI-dAiu6EdpMGYUZ2Q_23kXEYhj
 export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey)
 
 // ─── Auth ─────────────────────────────────────────────────────────────────────
