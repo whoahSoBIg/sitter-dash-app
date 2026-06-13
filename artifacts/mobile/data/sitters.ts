@@ -519,15 +519,27 @@ export const REVIEWS: Review[] = [
 export const MOCK_BOOKINGS: BookingRecord[] = [
   {
     id: "b1", sitterId: "s1", sitterName: "Maya Chen", sitterInitials: "MC", sitterAvatarColor: "#2563EB",
-    date: "Jun 15, 2026", startTime: "7:00 PM", hours: 3, rate: 22, totalCost: 82.1, status: "upcoming", children: ["Emma", "Liam"],
+    date: "Jun 15, 2026", startTime: "7:00 PM", hours: 3, rate: 22, totalCost: 82.10, status: "upcoming", children: ["Emma", "Liam"],
   },
   {
     id: "b2", sitterId: "s3", sitterName: "Sofia Nguyen", sitterInitials: "SN", sitterAvatarColor: "#059669",
-    date: "Jun 8, 2026", startTime: "6:00 PM", hours: 4, rate: 20, totalCost: 104.8, status: "completed", children: ["Emma"],
+    date: "Jun 8, 2026", startTime: "6:00 PM", hours: 4, rate: 20, totalCost: 104.80, status: "completed", children: ["Emma"],
   },
   {
     id: "b3", sitterId: "s2", sitterName: "Jordan Patel", sitterInitials: "JP", sitterAvatarColor: "#7C3AED",
-    date: "May 30, 2026", startTime: "5:00 PM", hours: 2, rate: 24, totalCost: 57.6, status: "completed", children: ["Liam"],
+    date: "May 30, 2026", startTime: "5:00 PM", hours: 2, rate: 24, totalCost: 57.60, status: "completed", children: ["Liam"],
+  },
+  {
+    id: "b4", sitterId: "s5", sitterName: "Priya Sharma", sitterInitials: "PS", sitterAvatarColor: "#D97706",
+    date: "May 17, 2026", startTime: "4:30 PM", hours: 5, rate: 23, totalCost: 132.25, status: "completed", children: ["Emma", "Liam"],
+  },
+  {
+    id: "b5", sitterId: "s4", sitterName: "Alex Rivera", sitterInitials: "AR", sitterAvatarColor: "#DC2626",
+    date: "May 3, 2026", startTime: "7:00 PM", hours: 3, rate: 21, totalCost: 72.45, status: "completed", children: ["Liam"],
+  },
+  {
+    id: "b6", sitterId: "s3", sitterName: "Sofia Nguyen", sitterInitials: "SN", sitterAvatarColor: "#059669",
+    date: "Apr 19, 2026", startTime: "6:30 PM", hours: 4, rate: 20, totalCost: 96.40, status: "cancelled", children: ["Emma"],
   },
 ];
 

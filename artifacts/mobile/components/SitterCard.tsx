@@ -171,10 +171,16 @@ export function SitterCard({
       <SitterAvatar sitter={sitter} size={56} />
       <View style={styles.cardInfo}>
         <View style={styles.cardRow}>
-          <Text style={[styles.cardName, { color: colors.foreground }]}>{sitter.name}</Text>
+          <Text
+            style={[styles.cardName, { color: colors.foreground }]}
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
+            {sitter.name}
+          </Text>
           {sitter.isPlus && (
             <View style={[styles.miniPlusBadge, { backgroundColor: colors.gold + "22" }]}>
-              <Text style={[styles.miniPlusText, { color: colors.gold }]}>PLUS</Text>
+              <Text style={[styles.miniPlusText, { color: colors.gold }]}>+</Text>
             </View>
           )}
         </View>
@@ -273,23 +279,25 @@ const styles = StyleSheet.create({
   cardRow: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 6,
+    gap: 5,
+    flexShrink: 1,
   },
   cardName: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: "700" as const,
     fontFamily: "Inter_700Bold",
+    flexShrink: 1,
   },
   miniPlusBadge: {
-    paddingHorizontal: 5,
+    paddingHorizontal: 4,
     paddingVertical: 2,
     borderRadius: 4,
+    flexShrink: 0,
   },
   miniPlusText: {
-    fontSize: 9,
+    fontSize: 10,
     fontWeight: "700" as const,
     fontFamily: "Inter_700Bold",
-    letterSpacing: 0.5,
   },
   cardUniversity: {
     fontSize: 12,
