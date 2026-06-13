@@ -19,9 +19,9 @@ import { useColors } from "@/hooks/useColors";
 
 const { height } = Dimensions.get("window");
 
-const TORONTO = {
-  latitude: 43.6532,
-  longitude: -79.3832,
+const VICTORIA = {
+  latitude: 48.4284,
+  longitude: -123.3656,
   latitudeDelta: 0.04,
   longitudeDelta: 0.04,
 };
@@ -61,7 +61,7 @@ export default function HomeScreen() {
           <TouchableOpacity style={styles.locationRow} activeOpacity={0.8}>
             <Ionicons name="location" size={16} color={colors.teal} />
             <Text style={[styles.locationText, { color: colors.foreground }]}>
-              Toronto, ON
+              Victoria, BC
             </Text>
             <Feather name="chevron-down" size={16} color={colors.mutedForeground} />
           </TouchableOpacity>
@@ -102,7 +102,7 @@ export default function HomeScreen() {
       <View style={styles.mapContainer}>
         <MapWrapper
           style={styles.map}
-          initialRegion={TORONTO}
+          initialRegion={VICTORIA}
           showsUserLocation
           showsMyLocationButton={false}
           userInterfaceStyle="dark"

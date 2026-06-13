@@ -78,7 +78,7 @@ export default function LandingScreen() {
         </Text>
 
         <Text style={[styles.sub, { color: colors.mutedForeground }]}>
-          Trusted by 12,000+ families in Toronto
+          Trusted by 4,000+ families in Victoria, BC
         </Text>
       </View>
 
