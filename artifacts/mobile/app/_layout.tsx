@@ -27,12 +27,12 @@ function RootLayoutNav() {
   // at the root Stack level — not from within the tabs navigator.
   useEffect(() => {
     if (userType === null) {
-      router.replace("/");
+      router.replace("/auth");
     }
   }, [userType]);
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
+    <S<Stack.Screen name="auth" options={{ headerShown: false }} /> }}>
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="sitter/[id]" options={{ headerShown: false }} />
