@@ -43,6 +43,9 @@ function RootLayoutNav() {
       <Stack.Screen name="booking/step4" options={{ headerShown: false }} />
       <Stack.Screen name="session/live" options={{ headerShown: false }} />
       <Stack.Screen name="session/chat" options={{ headerShown: false }} />
+      <Stack.Screen name="session/tip" options={{ headerShown: false }} />
+      <Stack.Screen name="session/enroute" options={{ headerShown: false }} />
+      <Stack.Screen name="session/receipt" options={{ headerShown: false }} />
       <Stack.Screen name="emergency" options={{ headerShown: false }} />
       <Stack.Screen name="ratings" options={{ headerShown: false }} />
     </Stack>

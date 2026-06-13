@@ -181,6 +181,16 @@ export default function BookingStep4() {
           <Ionicons name="checkmark-circle" size={20} color="#FFFFFF" />
           <Text style={styles.confirmBtnText}>Confirm & Book — ${total.toFixed(2)}</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            router.push("/session/chat");
+          }}
+          activeOpacity={0.85}
+          style={[styles.chatBtn, { backgroundColor: colors.card, borderColor: colors.border }]}
+        >
+          <Ionicons name="chatbubble-outline" size={18} color={colors.foreground} />
+          <Text style={[styles.chatBtnText, { color: colors.foreground }]}>Message Sitter First</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -254,4 +264,14 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   confirmBtnText: { color: "#FFFFFF", fontSize: 16, fontWeight: "700" as const, fontFamily: "Inter_700Bold" },
+  chatBtn: {
+    flexDirection: "row" as const,
+    alignItems: "center" as const,
+    justifyContent: "center" as const,
+    paddingVertical: 13,
+    borderRadius: 14,
+    borderWidth: 1,
+    gap: 8,
+  },
+  chatBtnText: { fontSize: 15, fontWeight: "600" as const, fontFamily: "Inter_600SemiBold" },
 });

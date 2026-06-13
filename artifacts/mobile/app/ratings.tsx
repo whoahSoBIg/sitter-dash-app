@@ -48,7 +48,6 @@ export default function RatingsScreen() {
 
   const [sitterRating, setSitterRating] = useState(0);
   const [review, setReview] = useState("");
-  const [submitted, setSubmitted] = useState(false);
 
   const topPad = Platform.OS === "web" ? 67 : insets.top;
   const botPad = Platform.OS === "web" ? 34 : insets.bottom;
@@ -61,31 +60,8 @@ export default function RatingsScreen() {
       return;
     }
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    setSubmitted(true);
     setSessionStatus("idle");
-  }
-
-  if (submitted) {
-    return (
-      <View style={[styles.container, { backgroundColor: colors.darkBg, paddingTop: topPad, paddingBottom: botPad }]}>
-        <View style={styles.successContent}>
-          <View style={[styles.successCircle, { backgroundColor: colors.teal + "22", borderColor: colors.teal }]}>
-            <Ionicons name="checkmark-circle" size={64} color={colors.teal} />
-          </View>
-          <Text style={[styles.successTitle, { color: colors.foreground }]}>Thanks for your review!</Text>
-          <Text style={[styles.successSub, { color: colors.mutedForeground }]}>
-            Your feedback helps other families choose great sitters.
-          </Text>
-          <TouchableOpacity
-            onPress={() => router.replace("/(tabs)")}
-            activeOpacity={0.85}
-            style={[styles.doneBtn, { backgroundColor: colors.teal }]}
-          >
-            <Text style={styles.doneBtnText}>Back to Home</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
+    router.replace("/session/receipt");
   }
 
   return (
@@ -219,17 +195,4 @@ const styles = StyleSheet.create({
   },
   submitBtnText: { color: "#FFFFFF", fontSize: 16, fontWeight: "700" as const, fontFamily: "Inter_700Bold" },
   skipText: { fontSize: 14, fontFamily: "Inter_400Regular", textAlign: "center" },
-  successContent: { flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 30, gap: 20 },
-  successCircle: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    borderWidth: 2,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  successTitle: { fontSize: 26, fontWeight: "700" as const, fontFamily: "Inter_700Bold", textAlign: "center" },
-  successSub: { fontSize: 15, fontFamily: "Inter_400Regular", textAlign: "center", lineHeight: 24 },
-  doneBtn: { paddingHorizontal: 36, paddingVertical: 14, borderRadius: 14, marginTop: 8 },
-  doneBtnText: { color: "#FFFFFF", fontSize: 16, fontWeight: "700" as const, fontFamily: "Inter_700Bold" },
 });

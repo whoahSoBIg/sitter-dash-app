@@ -44,6 +44,8 @@ interface AppState {
   setSitterActive: (a: boolean) => void;
   selectedCity: City;
   setSelectedCity: (c: City) => void;
+  tipAmount: number;
+  setTipAmount: (amount: number) => void;
 }
 
 const AppContext = createContext<AppState | null>(null);
@@ -60,6 +62,7 @@ export function AppProvider({ children: childrenNodes }: { children: ReactNode }
   const [children, setChildren] = useState<ChildProfile[]>(defaultChildren);
   const [sitterActive, setSitterActive] = useState(false);
   const [selectedCity, setSelectedCity] = useState<City>(DEFAULT_CITY);
+  const [tipAmount, setTipAmount] = useState(0);
 
   return (
     <AppContext.Provider
@@ -70,6 +73,7 @@ export function AppProvider({ children: childrenNodes }: { children: ReactNode }
         children, setChildren,
         sitterActive, setSitterActive,
         selectedCity, setSelectedCity,
+        tipAmount, setTipAmount,
       }}
     >
       {childrenNodes}

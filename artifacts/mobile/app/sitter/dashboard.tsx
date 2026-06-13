@@ -185,6 +185,17 @@ export default function SitterDashboard() {
                   <Text style={[styles.declineBtnText, { color: colors.mutedForeground }]}>Decline</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
+                  onPress={() => {
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                    router.push("/session/chat");
+                  }}
+                  activeOpacity={0.85}
+                  style={[styles.chatBtn, { backgroundColor: colors.darkBg, borderColor: colors.teal }]}
+                >
+                  <Ionicons name="chatbubble-outline" size={15} color={colors.teal} />
+                  <Text style={[styles.chatBtnText, { color: colors.teal }]}>Chat</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
                   onPress={() => handleAccept(req.id)}
                   activeOpacity={0.85}
                   style={[styles.acceptBtn, { backgroundColor: colors.teal }]}
@@ -292,6 +303,17 @@ const styles = StyleSheet.create({
   reqDetailText: { fontSize: 13, fontFamily: "Inter_400Regular" },
   reqNotes: { fontSize: 13, fontStyle: "italic", fontFamily: "Inter_400Regular" },
   reqActions: { flexDirection: "row", padding: 14, gap: 10 },
+  chatBtn: {
+    flex: 1,
+    flexDirection: "row" as const,
+    paddingVertical: 12,
+    borderRadius: 10,
+    borderWidth: 1,
+    alignItems: "center" as const,
+    justifyContent: "center" as const,
+    gap: 5,
+  },
+  chatBtnText: { fontSize: 14, fontWeight: "600" as const, fontFamily: "Inter_600SemiBold" },
   declineBtn: {
     flex: 1,
     paddingVertical: 12,

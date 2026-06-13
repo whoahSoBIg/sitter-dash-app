@@ -1,0 +1,17 @@
+Add the following features to the GoSitter app:
+1. In-app chat
+
+Add a chat screen accessible from three places: the booking confirmation screen, the live session tracker screen, and the sitter dashboard. The chat UI should look like iMessage — white bubbles for the other person, teal bubbles for you, timestamps on each message, and a text input bar pinned to the bottom with a send button. Show 3-4 mock messages in each conversation so it doesn't look empty. From the parent side the chat header shows the sitter's name and photo. From the sitter side it shows the parent's name and the children's names in smaller text below.
+2. Post-session tipping
+
+After a session completes and before the ratings screen, add a tipping screen. Show the sitter's photo, name, and the session summary. Four tip options as large tappable cards: 10%, 15%, 20%, and Custom. Show the dollar amount below each percentage based on the session subtotal. A "No tip" option in small text at the bottom. Tapping a card highlights it in teal and shows the new total. A "Confirm Tip" button proceeds to the ratings screen.
+3. Sitter en route screen
+
+When a sitter accepts a booking, show the parent a full-screen map with the sitter's location as a teal pin moving toward the parent's home pin. Show a bottom card with the sitter's photo, name, star rating, and a large ETA countdown (e.g. "Arriving in 8 min"). Two buttons: Chat and Cancel. The cancel button asks for a reason before confirming.
+4. Push notification banners
+
+Add mock notification banners that appear at the top of the screen for these events: "Maya accepted your booking", "Your sitter is 5 minutes away", "Session started — Maya has arrived", "Session complete — tap to rate". Each banner shows the GoSitter house+heart logo, the message, and auto-dismisses after 4 seconds.
+5. Post-session receipt
+
+After the tipping and rating screens, show a receipt screen with the GoSitter logo at the top, then a clean breakdown: sitter name and photo, date and duration, hourly rate × hours, service fee, safety fee, tip amount, and total charged. A "Download Receipt" button at the bottom and a "Back to Home" button.
+Keep all existing screens and navigation intact. Use the navy and teal color scheme throughout. Use mock data where needed.

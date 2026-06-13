@@ -1,7 +1,7 @@
 import { Feather, Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import { router } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Platform,
   ScrollView,
@@ -11,6 +11,8 @@ import {
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+import { NotificationBanner } from "@/components/NotificationBanner";
 import { useApp, SessionStatus } from "@/context/AppContext";
 import { useColors } from "@/hooks/useColors";
 
@@ -39,6 +41,13 @@ const STATUS_ORDER: SessionStatus[] = [
   "complete",
 ];
 
+const NOTIFICATION_MESSAGES: Partial<Record<SessionStatus, string>> = {
+  sitter_accepted: "Maya accepted your booking",
+  sitter_en_route: "Your sitter is 5 minutes away",
+  sitter_arrived: "Session started — Maya has arrived",
+  complete: "Session complete — tap to rate",
+};
+
 export default function LiveSessionScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
@@ -48,6 +57,26 @@ export default function LiveSessionScreen() {
   const botPad = Platform.OS === "web" ? 34 : insets.bottom;
 
   const currentIndex = STATUS_ORDER.indexOf(sessionStatus === "idle" ? "booking_sent" : sessionStatus);
+
+  const [bannerVisible, setBannerVisible] = useState(false);
+  const [bannerMessage, setBannerMessage] = useState("");
+  const prevStatus = useRef<SessionStatus | null>(null);
+
+  // Show notification banner on status transitions
+  useEffect(() => {
+    if (prevStatus.current === null) {
+      prevStatus.current = sessionStatus;
+      return;
+    }
+    if (prevStatus.current !== sessionStatus) {
+      const msg = NOTIFICATION_MESSAGES[sessionStatus];
+      if (msg) {
+        setBannerMessage(msg);
+        setBannerVisible(true);
+      }
+      prevStatus.current = sessionStatus;
+    }
+  }, [sessionStatus]);
 
   // Auto-advance for demo
   useEffect(() => {
@@ -65,13 +94,20 @@ export default function LiveSessionScreen() {
   function handleComplete() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     setSessionStatus("idle");
-    router.replace("/ratings");
+    router.replace("/session/tip");
   }
 
   const currentStep = STEPS[currentIndex] ?? STEPS[0];
 
   return (
     <View style={[styles.container, { backgroundColor: colors.darkBg }]}>
+      {/* Notification banner — absolute, appears over everything */}
+      <NotificationBanner
+        message={bannerMessage}
+        visible={bannerVisible}
+        onHide={() => setBannerVisible(false)}
+      />
+
       {/* Header */}
       <View style={[styles.header, { paddingTop: topPad + 8 }]}>
         <TouchableOpacity
@@ -125,6 +161,29 @@ export default function LiveSessionScreen() {
           )}
         </View>
 
+        {/* En Route — open map button */}
+        {sessionStatus === "sitter_en_route" && (
+          <TouchableOpacity
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              router.push("/session/enroute");
+            }}
+            activeOpacity={0.85}
+            style={[styles.enRouteCard, { backgroundColor: colors.teal + "18", borderColor: colors.teal + "55" }]}
+          >
+            <View style={[styles.enRouteIcon, { backgroundColor: colors.teal + "33" }]}>
+              <Ionicons name="navigate" size={20} color={colors.teal} />
+            </View>
+            <View style={styles.enRouteInfo}>
+              <Text style={[styles.enRouteTitle, { color: colors.teal }]}>Sitter En Route</Text>
+              <Text style={[styles.enRouteSub, { color: colors.mutedForeground }]}>
+                Tap to open live map · ETA ~8 min
+              </Text>
+            </View>
+            <Feather name="chevron-right" size={18} color={colors.teal} />
+          </TouchableOpacity>
+        )}
+
         {/* Sitter info + action buttons */}
         {bookingDraft && (
           <View
@@ -145,7 +204,6 @@ export default function LiveSessionScreen() {
               </Text>
             </View>
 
-            {/* Chat button — prominent */}
             <TouchableOpacity
               onPress={() => {
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -246,7 +304,7 @@ export default function LiveSessionScreen() {
           </View>
         )}
 
-        {/* Chat preview card — nudge to open chat */}
+        {/* Chat preview card */}
         {currentIndex >= 1 && sessionStatus !== "complete" && (
           <TouchableOpacity
             onPress={() => {
@@ -276,7 +334,7 @@ export default function LiveSessionScreen() {
           </TouchableOpacity>
         )}
 
-        {/* Complete session */}
+        {/* Complete session → goes to tip screen */}
         {sessionStatus === "complete" && (
           <TouchableOpacity
             onPress={handleComplete}
@@ -284,7 +342,7 @@ export default function LiveSessionScreen() {
             style={[styles.rateBtn, { backgroundColor: colors.teal }]}
           >
             <Ionicons name="star" size={20} color="#FFFFFF" />
-            <Text style={styles.rateBtnText}>Rate Your Session</Text>
+            <Text style={styles.rateBtnText}>Continue to Tip & Rate</Text>
           </TouchableOpacity>
         )}
       </ScrollView>
@@ -352,6 +410,24 @@ const styles = StyleSheet.create({
   pulseRow: { flexDirection: "row", alignItems: "center", gap: 6, marginTop: 4 },
   pulseDot: { width: 8, height: 8, borderRadius: 4 },
   pulseText: { fontSize: 12, fontFamily: "Inter_400Regular" },
+  enRouteCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 14,
+    borderRadius: 14,
+    borderWidth: 1,
+    gap: 12,
+  },
+  enRouteIcon: {
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  enRouteInfo: { flex: 1 },
+  enRouteTitle: { fontSize: 15, fontWeight: "700" as const, fontFamily: "Inter_700Bold" },
+  enRouteSub: { fontSize: 13, fontFamily: "Inter_400Regular", marginTop: 2 },
   sitterRow: {
     flexDirection: "row",
     alignItems: "center",
