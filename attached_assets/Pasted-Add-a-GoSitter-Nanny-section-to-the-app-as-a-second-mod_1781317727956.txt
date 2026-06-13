@@ -1,0 +1,27 @@
+Add a "GoSitter Nanny" section to the app as a second mode alongside the existing on-demand booking. Here's everything needed:
+Landing screen update
+
+Add a toggle or tab switcher at the top of the parent home screen with two modes: "Book Now" (existing on-demand flow) and "Find a Nanny" (new recurring care flow). Switching to Find a Nanny changes the screen to the nanny browse view.
+Nanny browse screen
+
+Same card layout as the existing sitter search but with additional info on each card: availability (e.g. "Mon/Wed/Fri evenings", "Weekday mornings"), weekly rate range, and a "Open to Nanny Work" teal badge. Filter chips: Full-time, Part-time, Mornings, Evenings, Weekends.
+Nanny profile screen
+
+Same as sitter profile but adds: weekly availability calendar showing green/grey blocks for each day and time slot, references section showing 2-3 reference names and relationship (e.g. "Former family, 2 years"), languages spoken, and a "Request Interview" button instead of "Book Now."
+Interview request flow
+
+Step 1: Parent selects a proposed interview time from a calendar picker. Step 2: Add a short message introducing their family, number of children, and what they're looking for. Step 3: Confirm screen showing the nanny's photo, proposed time, and a "Send Request" button.
+After sending, the nanny receives a notification and can Accept or Propose a new time. Once accepted, both parties see a confirmed interview card in their bookings screen.
+Contract screen
+
+After a successful interview, the parent can send a "Nanny Offer" with: start date, weekly hours, hourly rate, and any special notes. The nanny accepts or negotiates. Once both accept, a contract summary screen is shown to both with: nanny name and photo, weekly schedule, hourly rate, estimated weekly total, and GoSitter's 10% platform fee noted at the bottom. A "Start Arrangement" button activates the recurring booking.
+Recurring payments
+
+Every week on the agreed day, a payment summary is shown to the parent with a "Confirm & Pay" button. The nanny sees a "Payment incoming" notification with the amount.
+Sitter dashboard update
+
+Add a "Nanny Work" tab on the sitter dashboard alongside incoming requests. It shows: active nanny arrangements with family name, weekly schedule, and weekly earnings. A toggle on the sitter profile to mark themselves as "Open to Nanny Work."
+Navigation
+
+Add a "Nanny" icon to the bottom nav bar for parents, replacing or alongside the existing Search tab. Keep all existing on-demand booking screens completely intact.
+Use the navy and teal color scheme throughout. Use realistic Victoria BC mock data — families in Oak Bay and Fairfield looking for regular care, sitters from UVic with flexible schedules. Keep all existing mock data intact.
