@@ -39,25 +39,10 @@ export default function BookingStep4() {
     ? `${MONTHS[bookingDraft.date.getMonth()]} ${bookingDraft.date.getDate()}, ${bookingDraft.date.getFullYear()}`
     : "";
 
-  function handleConfirm() {
+ function handleConfirm() {
   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
   router.push("/payment");
-}{
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    setSessionStatus("booking_sent");
-    Alert.alert(
-      "Booking Sent!",
-      `Your request has been sent to ${bookingDraft?.sitterName}. They'll respond shortly.`,
-      [
-        {
-          text: "Track Session",
-          onPress: () => {
-            router.replace("/session/live");
-          },
-        },
-      ]
-    );
-  }
+}
 
   if (!bookingDraft || !sitter) {
     return (
