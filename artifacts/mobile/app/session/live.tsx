@@ -47,11 +47,11 @@ export default function LiveSessionScreen() {
   const topPad = Platform.OS === "web" ? 67 : insets.top;
   const botPad = Platform.OS === "web" ? 34 : insets.bottom;
 
-  const currentIndex = STATUS_ORDER.indexOf(sessionStatus);
+  const currentIndex = STATUS_ORDER.indexOf(sessionStatus === "idle" ? "booking_sent" : sessionStatus);
 
   // Auto-advance for demo
   useEffect(() => {
-    if (sessionStatus === "complete") return;
+    if (sessionStatus === "complete" || sessionStatus === "idle") return;
     const timer = setTimeout(() => {
       const next = STATUS_ORDER[currentIndex + 1];
       if (next) {
@@ -60,7 +60,7 @@ export default function LiveSessionScreen() {
       }
     }, 3500);
     return () => clearTimeout(timer);
-  }, [sessionStatus]);
+  }, [sessionStatus, currentIndex]);
 
   function handleComplete() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -91,54 +91,90 @@ export default function LiveSessionScreen() {
         </TouchableOpacity>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={[styles.content, { paddingBottom: botPad + 30 }]}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={[styles.content, { paddingBottom: botPad + 30 }]}
+      >
         {/* Status card */}
-        <View style={[styles.statusCard, {
-          backgroundColor: sessionStatus === "session_active" ? colors.teal + "22" : colors.card,
-          borderColor: sessionStatus === "session_active" ? colors.teal : colors.border,
-        }]}>
+        <View
+          style={[
+            styles.statusCard,
+            {
+              backgroundColor:
+                sessionStatus === "session_active" ? colors.teal + "22" : colors.card,
+              borderColor:
+                sessionStatus === "session_active" ? colors.teal : colors.border,
+            },
+          ]}
+        >
           <View style={[styles.statusIconCircle, { backgroundColor: colors.teal + "33" }]}>
             <Ionicons name={currentStep.icon as any} size={32} color={colors.teal} />
           </View>
           <Text style={[styles.statusLabel, { color: colors.teal }]}>{currentStep.label}</Text>
-          <Text style={[styles.statusDesc, { color: colors.mutedForeground }]}>{currentStep.description}</Text>
+          <Text style={[styles.statusDesc, { color: colors.mutedForeground }]}>
+            {currentStep.description}
+          </Text>
 
           {sessionStatus !== "complete" && (
             <View style={styles.pulseRow}>
               <View style={[styles.pulseDot, { backgroundColor: colors.teal }]} />
-              <Text style={[styles.pulseText, { color: colors.mutedForeground }]}>Live tracking active</Text>
+              <Text style={[styles.pulseText, { color: colors.mutedForeground }]}>
+                Live tracking active
+              </Text>
             </View>
           )}
         </View>
 
-        {/* Sitter info */}
+        {/* Sitter info + action buttons */}
         {bookingDraft && (
-          <View style={[styles.sitterRow, { backgroundColor: colors.card, borderColor: colors.border }]}>
+          <View
+            style={[
+              styles.sitterRow,
+              { backgroundColor: colors.card, borderColor: colors.border },
+            ]}
+          >
             <View style={[styles.sitterAvatar, { backgroundColor: "#2563EB" }]}>
               <Text style={styles.sitterInitials}>MC</Text>
             </View>
             <View style={styles.sitterInfo}>
-              <Text style={[styles.sitterName, { color: colors.foreground }]}>{bookingDraft.sitterName}</Text>
-              <Text style={[styles.sitterSub, { color: colors.mutedForeground }]}>Harvard University · 4.9 ★</Text>
+              <Text style={[styles.sitterName, { color: colors.foreground }]}>
+                {bookingDraft.sitterName}
+              </Text>
+              <Text style={[styles.sitterSub, { color: colors.mutedForeground }]}>
+                Harvard University · 4.9 ★
+              </Text>
             </View>
+
+            {/* Chat button — prominent */}
             <TouchableOpacity
-              style={[styles.callBtn, { backgroundColor: colors.teal + "22", borderColor: colors.teal + "44" }]}
-              activeOpacity={0.8}
+              onPress={() => {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                router.push("/session/chat");
+              }}
+              style={[styles.chatBtn, { backgroundColor: colors.teal }]}
+              activeOpacity={0.85}
             >
-              <Ionicons name="call" size={18} color={colors.teal} />
+              <Ionicons name="chatbubble" size={16} color="#FFFFFF" />
+              <Text style={styles.chatBtnText}>Chat</Text>
             </TouchableOpacity>
+
             <TouchableOpacity
-              style={[styles.callBtn, { backgroundColor: colors.muted, borderColor: colors.border }]}
+              style={[
+                styles.iconBtn,
+                { backgroundColor: colors.muted, borderColor: colors.border },
+              ]}
               activeOpacity={0.8}
             >
-              <Ionicons name="chatbubble" size={18} color={colors.foreground} />
+              <Ionicons name="call" size={18} color={colors.foreground} />
             </TouchableOpacity>
           </View>
         )}
 
         {/* Timeline */}
         <View style={styles.timelineSection}>
-          <Text style={[styles.timelineTitle, { color: colors.foreground }]}>Session Timeline</Text>
+          <Text style={[styles.timelineTitle, { color: colors.foreground }]}>
+            Session Timeline
+          </Text>
           {STEPS.map((step, i) => {
             const done = i < currentIndex;
             const current = i === currentIndex;
@@ -155,19 +191,32 @@ export default function LiveSessionScreen() {
                         borderWidth: current ? 3 : 0,
                         width: current ? 18 : 14,
                         height: current ? 18 : 14,
+                        borderRadius: current ? 9 : 7,
                       },
                     ]}
                   />
                   {i < STEPS.length - 1 && (
-                    <View style={[styles.timelineLine, { backgroundColor: done ? colors.teal : colors.border }]} />
+                    <View
+                      style={[
+                        styles.timelineLine,
+                        { backgroundColor: done ? colors.teal : colors.border },
+                      ]}
+                    />
                   )}
                 </View>
                 <View style={[styles.timelineContent, { opacity: future ? 0.4 : 1 }]}>
-                  <Text style={[styles.timelineLabel, { color: current ? colors.teal : colors.foreground }]}>
+                  <Text
+                    style={[
+                      styles.timelineLabel,
+                      { color: current ? colors.teal : colors.foreground },
+                    ]}
+                  >
                     {step.label}
                   </Text>
                   {(done || current) && (
-                    <Text style={[styles.timelineDesc, { color: colors.mutedForeground }]}>{step.description}</Text>
+                    <Text style={[styles.timelineDesc, { color: colors.mutedForeground }]}>
+                      {step.description}
+                    </Text>
                   )}
                 </View>
               </View>
@@ -175,17 +224,56 @@ export default function LiveSessionScreen() {
           })}
         </View>
 
-        {/* Photo check-in note */}
+        {/* Photo check-in */}
         {(sessionStatus === "session_active" || sessionStatus === "sitter_arrived") && (
-          <View style={[styles.photoCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
-            <Ionicons name="camera" size={20} color={colors.teal} />
+          <View
+            style={[
+              styles.photoCard,
+              { backgroundColor: colors.card, borderColor: colors.border },
+            ]}
+          >
+            <View style={[styles.photoIconCircle, { backgroundColor: colors.teal + "22" }]}>
+              <Ionicons name="camera" size={20} color={colors.teal} />
+            </View>
             <View style={styles.photoInfo}>
-              <Text style={[styles.photoTitle, { color: colors.foreground }]}>Hourly Photo Check-In</Text>
+              <Text style={[styles.photoTitle, { color: colors.foreground }]}>
+                Hourly Photo Check-In
+              </Text>
               <Text style={[styles.photoDesc, { color: colors.mutedForeground }]}>
                 Maya will send a photo update every hour. Next check-in in 42 minutes.
               </Text>
             </View>
           </View>
+        )}
+
+        {/* Chat preview card — nudge to open chat */}
+        {currentIndex >= 1 && sessionStatus !== "complete" && (
+          <TouchableOpacity
+            onPress={() => {
+              Haptics.selectionAsync();
+              router.push("/session/chat");
+            }}
+            activeOpacity={0.85}
+            style={[
+              styles.chatPreviewCard,
+              { backgroundColor: colors.card, borderColor: colors.teal + "55" },
+            ]}
+          >
+            <View style={[styles.chatPreviewLeft, { backgroundColor: "#2563EB" }]}>
+              <Text style={styles.chatPreviewInitials}>MC</Text>
+            </View>
+            <View style={styles.chatPreviewInfo}>
+              <Text style={[styles.chatPreviewName, { color: colors.foreground }]}>
+                {bookingDraft?.sitterName ?? "Maya Chen"}
+              </Text>
+              <Text style={[styles.chatPreviewMsg, { color: colors.mutedForeground }]}>
+                Tap to open session chat →
+              </Text>
+            </View>
+            <View style={[styles.chatBadge, { backgroundColor: colors.teal }]}>
+              <Ionicons name="chatbubble-ellipses" size={18} color="#FFFFFF" />
+            </View>
+          </TouchableOpacity>
         )}
 
         {/* Complete session */}
@@ -213,9 +301,27 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 16,
   },
-  backBtn: { width: 42, height: 42, borderRadius: 21, borderWidth: 1, alignItems: "center", justifyContent: "center" },
-  headerTitle: { fontSize: 18, fontWeight: "700" as const, fontFamily: "Inter_700Bold" },
-  emergencyBtn: { width: 42, height: 42, borderRadius: 21, borderWidth: 1, alignItems: "center", justifyContent: "center" },
+  backBtn: {
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: "700" as const,
+    fontFamily: "Inter_700Bold",
+  },
+  emergencyBtn: {
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   content: { paddingHorizontal: 20, gap: 16 },
   statusCard: {
     borderRadius: 16,
@@ -224,9 +330,25 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 10,
   },
-  statusIconCircle: { width: 68, height: 68, borderRadius: 34, alignItems: "center", justifyContent: "center", marginBottom: 4 },
-  statusLabel: { fontSize: 22, fontWeight: "700" as const, fontFamily: "Inter_700Bold", textAlign: "center" },
-  statusDesc: { fontSize: 15, fontFamily: "Inter_400Regular", textAlign: "center" },
+  statusIconCircle: {
+    width: 68,
+    height: 68,
+    borderRadius: 34,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 4,
+  },
+  statusLabel: {
+    fontSize: 22,
+    fontWeight: "700" as const,
+    fontFamily: "Inter_700Bold",
+    textAlign: "center",
+  },
+  statusDesc: {
+    fontSize: 15,
+    fontFamily: "Inter_400Regular",
+    textAlign: "center",
+  },
   pulseRow: { flexDirection: "row", alignItems: "center", gap: 6, marginTop: 4 },
   pulseDot: { width: 8, height: 8, borderRadius: 4 },
   pulseText: { fontSize: 12, fontFamily: "Inter_400Regular" },
@@ -236,22 +358,73 @@ const styles = StyleSheet.create({
     padding: 14,
     borderRadius: 14,
     borderWidth: 1,
-    gap: 12,
+    gap: 10,
   },
-  sitterAvatar: { width: 46, height: 46, borderRadius: 23, alignItems: "center", justifyContent: "center" },
-  sitterInitials: { color: "#FFFFFF", fontSize: 15, fontWeight: "700" as const, fontFamily: "Inter_700Bold" },
+  sitterAvatar: {
+    width: 46,
+    height: 46,
+    borderRadius: 23,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  sitterInitials: {
+    color: "#FFFFFF",
+    fontSize: 15,
+    fontWeight: "700" as const,
+    fontFamily: "Inter_700Bold",
+  },
   sitterInfo: { flex: 1 },
-  sitterName: { fontSize: 16, fontWeight: "700" as const, fontFamily: "Inter_700Bold" },
+  sitterName: {
+    fontSize: 16,
+    fontWeight: "700" as const,
+    fontFamily: "Inter_700Bold",
+  },
   sitterSub: { fontSize: 12, fontFamily: "Inter_400Regular", marginTop: 2 },
-  callBtn: { width: 38, height: 38, borderRadius: 19, borderWidth: 1, alignItems: "center", justifyContent: "center" },
+  chatBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
+    paddingHorizontal: 14,
+    paddingVertical: 9,
+    borderRadius: 20,
+  },
+  chatBtnText: {
+    color: "#FFFFFF",
+    fontSize: 14,
+    fontWeight: "700" as const,
+    fontFamily: "Inter_700Bold",
+  },
+  iconBtn: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   timelineSection: { gap: 0 },
-  timelineTitle: { fontSize: 18, fontWeight: "700" as const, fontFamily: "Inter_700Bold", marginBottom: 16 },
+  timelineTitle: {
+    fontSize: 18,
+    fontWeight: "700" as const,
+    fontFamily: "Inter_700Bold",
+    marginBottom: 16,
+  },
   timelineRow: { flexDirection: "row", gap: 12, marginBottom: 4 },
   timelineLeft: { alignItems: "center", width: 20 },
-  timelineDot: { borderRadius: 10 },
-  timelineLine: { flex: 1, width: 2, marginTop: 4, marginBottom: 0, minHeight: 28 },
+  timelineDot: {},
+  timelineLine: {
+    flex: 1,
+    width: 2,
+    marginTop: 4,
+    marginBottom: 0,
+    minHeight: 28,
+  },
   timelineContent: { flex: 1, paddingBottom: 20 },
-  timelineLabel: { fontSize: 15, fontWeight: "600" as const, fontFamily: "Inter_600SemiBold" },
+  timelineLabel: {
+    fontSize: 15,
+    fontWeight: "600" as const,
+    fontFamily: "Inter_600SemiBold",
+  },
   timelineDesc: { fontSize: 13, fontFamily: "Inter_400Regular", marginTop: 2 },
   photoCard: {
     flexDirection: "row",
@@ -261,9 +434,55 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     gap: 12,
   },
+  photoIconCircle: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   photoInfo: { flex: 1, gap: 4 },
-  photoTitle: { fontSize: 15, fontWeight: "600" as const, fontFamily: "Inter_600SemiBold" },
+  photoTitle: {
+    fontSize: 15,
+    fontWeight: "600" as const,
+    fontFamily: "Inter_600SemiBold",
+  },
   photoDesc: { fontSize: 13, fontFamily: "Inter_400Regular", lineHeight: 20 },
+  chatPreviewCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 14,
+    borderRadius: 14,
+    borderWidth: 1,
+    gap: 12,
+  },
+  chatPreviewLeft: {
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  chatPreviewInitials: {
+    color: "#FFFFFF",
+    fontSize: 14,
+    fontWeight: "700" as const,
+    fontFamily: "Inter_700Bold",
+  },
+  chatPreviewInfo: { flex: 1 },
+  chatPreviewName: {
+    fontSize: 15,
+    fontWeight: "600" as const,
+    fontFamily: "Inter_600SemiBold",
+  },
+  chatPreviewMsg: { fontSize: 13, fontFamily: "Inter_400Regular", marginTop: 2 },
+  chatBadge: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   rateBtn: {
     flexDirection: "row",
     alignItems: "center",
@@ -272,5 +491,10 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     gap: 8,
   },
-  rateBtnText: { color: "#FFFFFF", fontSize: 16, fontWeight: "700" as const, fontFamily: "Inter_700Bold" },
+  rateBtnText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "700" as const,
+    fontFamily: "Inter_700Bold",
+  },
 });
