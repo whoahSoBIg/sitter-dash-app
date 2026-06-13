@@ -167,7 +167,6 @@ export default function ProfileScreen() {
           onPress={() => {
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
             setUserType(null);
-            router.replace("/");
           }}
         />
       </View>
